@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html><html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes"> 
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <title>國際新聞機器人</title>
+    <link rel="stylesheet" href="{% static 'css/stark_lab_project_war.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/stark_lab_project3.css' %}" /> -->
+    <link rel="stylesheet" href="{% static 'css/styleguide.css' %}">
+    <link rel="stylesheet" href="{% static 'css/globals.css' %}">
+  </head>
+  <body style="margin: 0; background: #ffffff">
+    <input
+      type="hidden"
+      id="anPageName"
+      name="page"
+      value="stark_lab_project_linebot"
+    />
+    <div class="container-center-horizontal">
+      <div class="stark_lab_project_linebot screen">
+        <div class="overlap-group3">
+          <div class="navigation-bar">
+            <img class="logo-1" src="{% static 'img/------logo-1@2x.png' %}" alt="logo 1" />
+            <div class="navbar notosanstc-semi-bold-black-20px">
+              <a href="/">
+                <div class="navbar-link-text notosanstc-semi-bold-black-20px">首頁</div>
+              </a>
+              <a href="/project/">  
+                <div class="navbar-link-text notosanstc-semi-bold-black-20px">研究專案</div>
+              </a>
+              <a href="/member/">
+                <div class="navbar-link-text notosanstc-semi-bold-black-20px">成員介紹</div>
+              </a>
+              <a href="/professor/">
+                <div class="navbar-link-text notosanstc-semi-bold-black-20px">論文研究</div>
+              </a>
+            </div>
+          </div>
+          <img class="line-30" src="{% static 'img/line-30.svg' %}" alt="Line 30" />
+        </div>
+        <div class="overlap-group4">
+          <div class="group-31"><img class="arrow-2" src="{% static 'img/arrow-2.svg' %}" alt="Arrow 2" /></div>
+          <div class="text-40">回上一頁</div>
+          <a href="/project/"><div class="rectangle-83"></div></a>
+        </div>
+        <div class="overlap-group5">
+          <div class="overlap-group">
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="xxx-xxx-xxx-xxx">開發者：鄭凱峻、黃昱睿</div>
+            <div class="content"></div>
+          </div>
+          <h1 class="line-bot valign-text-middle">國際新聞<br/>機器人</h1>
+          <div class="link-2 link-4"></div>
+          <img class="x2-1" src="{% static 'img/2-1.png' %}" alt="2 1" />
+        </div>
+<!-- 成果展現區域 -->
+<br><br><br>
+<div class="frame-27">
+  <div class="overlap-group-1">
+    <div class="text spacegrotesk-medium-white-36px">專案介紹</div>
+  </div>
+  <div class="group-15">
+    <img class="line-26" src="{% static 'img/line-26.svg' %}" alt="Line 26" />
+    <div class="text-29">
+      本專案運用網路爬蟲技術與大數據分析，即時蒐集並整理全球重大水文災害資訊，協助水利署長官們迅速掌握最新情勢，以便在行政院會議、立法院質詢及各類政策討論中提供具體案例與數據支持，並作為未來施政規劃的重要參考依據。
+<p>技術架構與作業方式:</p>
+本專案目前採用關鍵字訂閱與自動爬蟲技術，每日從各大新聞平台、政府機構報告及國際防災組織網站擷取相關資訊，篩選並彙整成簡訊或報告格式，提供給水利署決策者。未來將逐步導入自然語言處理（NLP）技術與機器學習演算法，進一步提高資訊過濾與分類的準確度，確保獲取的數據更具時效性與價值。
+透過本專案，水利署將能夠更精準地掌握全球水文災害發展趨勢，強化政策應變能力，確保防災決策的前瞻性與科學依據。
+
+    </div>
+  </div>
+
+  <!-- 成果展現 -->
+  <div class="frame-27">
+    <div class="overlap-group-1">
+      <div class="text spacegrotesk-medium-white-36px">成果展現</div>
+    </div>
+    <br><br><br>
+    <div class="group-15">
+      <div class="main-content">
+        <div class="photo-container">
+            <!-- 照片區域 1 -->
+            <div class="photo-section">
+                <img src="{% static 'img/picture_1.jpg' %}" alt="照片1描述" class="photo">
+                <p class="caption">Linebot上的成果_1</p>
+            </div>
+
+            <!-- 照片區域 2 -->
+            <div class="photo-section">
+                <img src="{% static 'img/picture_2.jpg' %}" alt="照片2描述" class="photo">
+                <p class="caption">Linebot上的成果_2</p>
+            </div>
+
+            <!-- 照片區域 3 -->
+            <div class="photo-section">
+                <img src="{% static 'img/picture_3.jpg' %}" alt="照片3描述" class="photo">
+                <p class="caption">Linebot上的成果_3</p>
+            </div>
+        </div>
+
+        <!-- 成品連結 -->
+        <!-- <br><br><br>
+        <a href="http://starklab.tw:3000/api/news/" 
+        style="color: rgb(82, 126, 214); font-size: 25px; text-align: left; display: block;" 
+        target="_blank" 
+        rel="noopener noreferrer">
+        爬取新聞資料
+        </a>        <br><br>
+        <a href="http://starklab.tw:3000/api/news/ai/" 
+        style="color: rgb(82, 126, 214); font-size: 25px; text-align: left; display: block;" 
+        target="_blank" 
+        rel="noopener noreferrer">
+        AI自動化處理資料
+        </a>        <br><br>
+        <a href="http://starklab.tw:3000/api/news/sql/" 
+        style="color: rgb(82, 126, 214); font-size: 25px; text-align: left; display: block;" 
+        target="_blank" 
+        rel="noopener noreferrer">
+        JSON檔成品展示
+        </a>        <br><br>
+        <a href="https://github.com/KGISGOOD/StarkLab/blob/main/labweb/lab/mylab/project3_README.md" style="color: rgb(82, 126, 214); font-size: 25px; text-align: left; display: block;">程式碼介紹</a>
+         -->
+
+
+        <div class="group-25">
+          <div class="overlap-group1"><div class="text spacegrotesk-medium-white-36px">相關連結</div></div>
+        </div>
+
+
+        <div class="overlap-group2">
+          <div class="line-container">
+            <img class="line" src="{% static 'img/line-27.svg' %}" alt="Line 27" />
+            <img class="line" src="{% static 'img/line-27.svg' %}" alt="Line 31" />
+            <img class="line-28" src="{% static 'img/line-28.svg' %}" alt="Line 28" />
+            <img class="line-29" src="{% static 'img/line-28.svg' %}" alt="Line 29" />
+          </div>          
+          <a href="http://starklab.tw:3000/api/news/" target="_blank" rel="noopener noreferrer">
+            <div class="link-3 link-4">
+              <div class="icon"><img class="arrow-1" src="{% static 'img/arrow-1-1.svg' %}" alt="Arrow 1" /></div>
+              <div class="label notosanstc-bold-navy-blue-20px">點我前往</div>
+            </div>
+            <div class="text-31 notosanstc-bold-navy-blue-36px">爬取新聞資料</div>
+            <div class="text-32 notosanstc-normal-black-24px">
+              點擊後會開始爬取七天內的國際災害新聞
+            </div>
+          </a>
+        
+        <a href="https://github.com/KGISGOOD/StarkLab/blob/main/labweb/lab/mylab/project3_README.md">
+        <div class="group-49">
+          <div class="etf notosanstc-bold-navy-blue-36px">程式碼介紹</div>
+          <div class="text-3 notosanstc-normal-black-24px">
+            將前往GITHUB上觀看程式碼介紹  
+          </div>
+          <div class="link">
+            <div class="icon"><img class="arrow-1" src="{% static 'img/arrow-1-1.svg' %}" alt="Arrow 1" /></div>
+            <div class="label notosanstc-bold-navy-blue-20px">點我前往</div>
+          </div>
+        </div>
+        </a>
+        
+        <a href="http://starklab.tw:3000/api/news/ai/" target="_blank" rel="noopener noreferrer">
+          <div class="group-47">
+            <div class="text-36 notosanstc-bold-navy-blue-36px">AI自動資料處理</div>
+            <div class="text-3-1 notosanstc-normal-black-24px">
+              點擊後ai會開始處理剛剛所爬取到的國際災害新聞
+            </div>
+            <div class="link-1 link-4">
+              <div class="icon"><img class="arrow-1" src="{% static 'img/arrow-1-1.svg' %}" alt="Arrow 1" /></div>
+              <div class="label notosanstc-bold-navy-blue-20px">點我前往</div>
+            </div>
+          </div>
+        </a>
+        <a href="http://starklab.tw:3000/api/news/sql/" target="_blank" rel="noopener noreferrer">
+          <div class="group-48">
+            <div class="text-38 notosanstc-bold-navy-blue-36px">成品展示</div>
+            <div class="text-3-1 notosanstc-normal-black-24px">
+              點擊後會開始展示剛剛所處理過的國際災害新聞
+            </div>
+            <div class="link-1 link-4">
+              <div class="icon"><img class="arrow-1" src="{% static 'img/arrow-1-1.svg' %}" alt="Arrow 1" /></div>
+              <div class="label notosanstc-bold-navy-blue-20px">點我前往</div>
+            </div>
+          </div>
+        </a>
+        <!-- <a href="http://starklab.tw:3000/api/run_crawler_and_ai/" target="_blank" rel="noopener noreferrer">
+          <div class="group-50">
+            <div class="text-34 notosanstc-bold-navy-blue-36px">一鍵執行</div>
+            <div class="text-3 notosanstc-normal-black-24px">
+              按下此按鈕來執行爬蟲與AI自動化處理
+            </div>
+            <div class="link">
+              <div class="icon"><img class="arrow-1" src="{% static 'img/arrow-1-1.svg' %}" alt="Arrow 1" /></div>
+              <div class="label notosanstc-bold-navy-blue-20px">點我前往</div>
+            </div>
+          </div>
+        </a> -->
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+        <!-- footer -->
+        <div class="group-36">
+          <div class="footer">
+            <div class="navigation-and-contacts">
+              <div class="frame-26">
+                <div class="contact-us">
+                  <div class="heading">
+                    <div class="label-1"><div class="label-2 notosans-bold-navy-blue-20px">Contact us:</div></div>
+                  </div>
+                  <div class="info">
+                    <div class="email-d04921004ntuedutw notosans-normal-white-18px">Email: D04921004@ntu.edu.tw</div>
+                    <p class="address-100 notosanstc-normal-white-18px">
+                      Address: 100台北市中正區貴陽街一段56號 No. 56, Sec. 1, Guiyang St., Zhongzheng Dist., Taipei City<br /><br />
+                      ©2025 Soochow University Starklab . All Rights Reserved.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="group-30" src="{% static 'img/group-30-2@2x.png' %}" alt="Group 30" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

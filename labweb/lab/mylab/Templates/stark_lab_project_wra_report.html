@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
+    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes"> 
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <title>應變報告生成</title>
+    <!-- <link rel="stylesheet" type="text/css" href="css/stark_lab_project_linebot.css" />
+    <link rel="stylesheet" type="text/css" href="css/styleguide.css" />
+    <link rel="stylesheet" type="text/css" href="css/globals.css" /> -->
+
+    <link rel="stylesheet" href="{% static 'css/stark_lab_project_linebot.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styleguide.css' %}">
+    <link rel="stylesheet" href="{% static 'css/globals.css' %}">
+
+  </head>
+  <body style="margin: 0; background: #ffffff">
+    <input
+      type="hidden"
+      id="anPageName"
+      name="page"
+      value="stark_lab_project_linebot"
+    />
+    <div class="container-center-horizontal">
+      <div class="stark_lab_project_linebot screen">
+        <div class="overlap-group3">
+          <div class="navigation-bar">
+            <img class="logo-1" src="{% static 'img/------logo-1@2x.png' %}" alt="logo 1" />
+            <div class="navbar notosanstc-semi-bold-black-20px">
+              <a href="/"
+                ><div class="navbar-link-text notosanstc-semi-bold-black-20px">首頁</div>
+            </a>
+            <a href="/project/"  
+              ><div class="navbar-link-text notosanstc-semi-bold-black-20px">研究專案</div>
+            </a>
+            <a href="/member/"
+              ><div class="navbar-link-text notosanstc-semi-bold-black-20px">成員介紹</div>
+            </a>
+            <a href="/professor/"
+              ><div class="navbar-link-text notosanstc-semi-bold-black-20px">論文研究</div>
+            </a>
+            </div>
+          </div>
+          <img class="line-30" src="{% static 'img/line-30.svg' %}" alt="Line 30" />
+        </div>
+        <div class="overlap-group4">
+          <div class="group-31"><img class="arrow-2" src="{% static 'img/arrow-2.svg' %}" alt="Arrow 2" /></div>
+          <div class="text-40">回上一頁</div>
+          <a href="/project/"> <div class="rectangle-83"></div></a>
+        </div>
+        <div class="overlap-group5">
+          <div class="overlap-group">
+            <div class="xxx-xxx-xxx-xxx">黃昱睿</div>
+            <div class="content"></div>
+          </div>
+          <h1 class="line-bot valign-text-middle">應變報告生成</h1>
+
+          <img class="x2-1" src="{% static 'img/2-1.png' %}" alt="2 1" />
+        </div>
+        <br><br><br>
+        <div class="frame-27">
+            <div class="overlap-group-1">
+            <div class="text spacegrotesk-medium-white-36px">專案介紹</div>
+            </div>
+            <div class="group-15">
+              <img class="line-26" src="{% static 'img/line-26.svg' %}" alt="Line 26" />
+              <div class="text-29">
+              <!-- <p>我們運用大型語言模型（LLM）開發了一款災害應變新聞稿生成機器人，旨在提升水利署新聞稿的撰寫效率與品質。</p> -->
+
+              <p>水利署定期於官網發布新聞稿，內容由水利署本部各組室及所屬機關提供，涵蓋河川治理政策、水資源管理、水利知識普及，以及天然災害（風災、水災、旱災）的整備與應變處置等議題。由於臺灣受水資源及天然災害影響甚鉅，水利署的政策宣導與新聞稿發布扮演著關鍵角色。</p>
+              
+              <p><strong>目前新聞稿撰寫作業流程</strong></p>
+              
+              <p>目前，新聞稿主要由各組室草擬初稿，再由水利署秘書室第四科進行潤飾與審核。撰寫過程通常參考過去相似案例、相關會議紀錄及實際作業內容，並搭配數張照片以增強新聞可讀性。</p>
+              
+              <p>以災害應變新聞稿為例，內容的撰寫方式依據災害階段不同而有所調整：</p>
+              
+              <p><strong>災前：</strong>根據整備會議紀錄撰寫，主要目的是向外界說明水利署已準備好應對可能發生的災害。</p>
+              <p><strong>災中：</strong>以應變小組開設或長官巡查為基礎撰寫，強調水利署正密切關注災情並持續應變。</p>
+              <p><strong>災後：</strong>以復建工作為主，說明搶修與搶險進度，以及補助申請辦法，確保民眾獲得必要資訊。</p>
+              
+              <!-- <p><strong>運用 LLM 提升新聞稿撰寫品質</strong></p> -->
+              
+              <p>為確保新聞稿的準確性、一致性與效率，我們初步規劃結合資訊檢索與生成式 AI 模型，應用歷史新聞稿資料來：</p>
+              
+              <ul>
+                <li>模仿既有寫作風格，確保新聞稿語調與內容連貫性</li>
+                <li>修正用詞，提升表達的專業度與流暢度</li>
+                <!-- <li>提供撰寫方向建議，確保新聞稿符合政策宣導需求</li> -->
+              </ul>
+              
+              <!-- <p>透過 LLM 技術的輔助，新聞稿撰寫流程將更加高效、標準化，並確保災害應變資訊能即時且準確地傳達給社會大眾。</p> -->
+              
+                <!-- <br><br><br><br><br> -->
+
+                <div style="text-align: center;">
+                    <a href="{% url 'ai_report' %}" style="color: white; background-color: rgb(71, 99, 156); padding: 15px 30px; border-radius: 30px; display: inline-block;">點擊查看成果</a>
+                </div>
+                
+            </div>
+
+          </div>
+        </div>
+        <div class="group-25">
+          <div class="overlap-group1"><div class="text spacegrotesk-medium-white-36px">架構展示</div></div>
+        </div>
+
+
+        <div class="overlap-group2">
+            <img src="{% static 'img/news_report.png' %}" alt="report" style="width: 1100px; height: auto; margin-left: 100px; margin-top: 80px;" />
+
+        </div>
+
+
+        <div class="group-36">
+          <div class="footer">
+            <div class="navigation-and-contacts">
+              <div class="frame-26">
+                <div class="contact-us">
+                  <div class="heading">
+                    <div class="label-1"><div class="label-2 notosans-bold-navy-blue-20px">Contact us:</div></div>
+                  </div>
+                  <div class="info">
+                    <div class="email-d04921004ntuedutw notosans-normal-white-18px">Email: D04921004@ntu.edu.tw</div>
+                    <p class="address-100 notosanstc-normal-white-18px">
+                      Address: 100台北市中正區貴陽街一段56號 No. 56, Sec. 1, Guiyang St., Zhongzheng Dist., Taipei
+                      City<br /><br />
+                      ©2025 Soochow University Starklab . All Rights Reserved.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>{
+          <img class="group-30" src="% static 'img/group-30-2@2x.png' %}" alt="Group 30" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

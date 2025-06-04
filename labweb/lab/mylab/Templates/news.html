@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News List</title>
+    <style>
+        /* 更新中文字樣式 */
+        #updating-text {
+            display: none;
+            font-weight: bold;
+            color: #4caf50;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>News List</h1>
+
+    <!-- 搜尋框 -->
+    <form method="GET" action="{% url 'news_list' %}">
+        <input type="text" name="search" placeholder="Search for news...">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- 更新新聞按鈕 -->
+    <button id="update-news-btn">Update News</button>
+
+    <!-- 更新中文字 -->
+    <p id="updating-text">更新中...</p>
+
+    <!-- 顯示新聞列表 -->
+    <ul>
+        {% for news in news_list %}
+        <li>
+            <a href="{{ news.link }}">{{ news.title }}</a><br>
+            {% if news.image != 'null' %}
+            <div>
+                <img src="{{ news.image }}" alt="{{ news.title }}" style="max-width: 100%; height: auto;">
+            </div>
+            {% endif %}
+            <p>{{ news.content }}</p>
+            <small>Source: {{ news.source }} | Date: {{ news.date }} | Region: {{ news.region }}</small>
+            
+        </li>
+        {% empty %}
+        <p>No news found.</p>
+        {% endfor %}
+    </ul>
+
+    <!-- 使用 JavaScript 處理按鈕點擊事件和更新中文字 -->
+    <script>
+        document.getElementById('update-news-btn').addEventListener('click', function () {
+            // 顯示更新中文字
+            document.getElementById('updating-text').style.display = 'block';
+
+            // 禁用更新按鈕
+            this.disabled = true;
+
+            // 透過 AJAX 發送更新新聞的請求
+            // 使用 fetch API 向伺服器的 /update/ 路徑發送一個 GET 請求。
+            // /update/ 是伺服器端設計的 API 路徑，負責處理「更新新聞」的邏輯。
+            fetch('/update/', {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // 更新完成後顯示已更新完成
+                    alert('更新完成！');
+                    // 隱藏更新中文字
+                    document.getElementById('updating-text').style.display = 'none';
+                    // 重新啟用更新按鈕
+                    document.getElementById('update-news-btn').disabled = false;
+                    // 重新加載頁面以顯示最新新聞
+                    location.reload();
+                })
+                .catch(error => {
+                    alert('更新失敗！');
+                    // 隱藏更新中文字
+                    document.getElementById('updating-text').style.display = 'none';
+                    // 重新啟用更新按鈕
+                    document.getElementById('update-news-btn').disabled = false;
+                });
+        });
+    </script>
+</body>
+
+</html>
