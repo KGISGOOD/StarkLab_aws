@@ -61,10 +61,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "lab.urls"
 
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [os.path.join(BASE_DIR, 'mylab', 'Templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -159,4 +165,6 @@ CSRF_COOKIE_HTTPONLY = False  # 允許 JavaScript 訪問 CSRF token
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://localhost',
+    'http://35.174.62.39/',
+
 ]
