@@ -214,8 +214,11 @@ def setup_chrome_driver():
     chrome_options.add_argument('--disable-software-rasterizer')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('--ignore-ssl-errors')
-    
-    service = Service(ChromeDriverManager().install())
+
+    # 手動指定系統安裝的 chromium 與 chromedriver 路徑
+    chrome_options.binary_location = '/usr/bin/chromium-browser'  # 或者 /usr/bin/chromium
+    service = Service(executable_path='/usr/bin/chromedriver')
+
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
