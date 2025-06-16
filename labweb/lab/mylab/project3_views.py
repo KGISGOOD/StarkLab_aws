@@ -10,7 +10,7 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -204,20 +204,32 @@ def parse_date(date_str):
 
     return date.strftime('%Y-%m-%d')
 
+
+from selenium.common.exceptions import WebDriverException
 # 設置 Chrome 驅動
 def setup_chrome_driver():
+    """
+    初始化 headless Chrome WebDriver，適用於 Ubuntu + Snap 安裝 Chromium 環境
+    """
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')  # 無頭模式
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-software-rasterizer')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('--ignore-ssl-errors')
-    
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    return driver
+
+    # 指定 chromium 路徑與 chromedriver 路徑（請根據 snap 查到的版本調整）
+    chrome_options.binary_location = '/usr/bin/chromium-browser'
+    service = Service(executable_path='/snap/chromium/3160/usr/lib/chromium-browser/chromedriver')
+
+    try:
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        return driver
+    except WebDriverException as e:
+        print(f"[錯誤] 無法啟動 Chrome Driver: {e}")
+        return None
 
 # 獲取最終網址（處理 Google News 跳轉）
 def get_final_url(driver, url):
