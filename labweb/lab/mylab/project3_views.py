@@ -10,7 +10,7 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-# from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -209,27 +209,102 @@ from selenium.common.exceptions import WebDriverException
 # 設置 Chrome 驅動
 def setup_chrome_driver():
     """
-    初始化 headless Chrome WebDriver，適用於 Ubuntu + Snap 安裝 Chromium 環境
+    針對你的 EC2 aarch64 環境優化的 Chrome WebDriver 設置
+    使用已安裝的 Chromium 和 ChromeDriver
     """
+    print("[開始] 初始化 Chrome WebDriver...")
+    
+    # Chrome 選項設置
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  # 無頭模式
+    
+    # 基本 headless 設置
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-software-rasterizer')
+    
+    # 安全性設置
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('--ignore-ssl-errors')
-
-    # 指定 chromium 路徑與 chromedriver 路徑（請根據 snap 查到的版本調整）
+    chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+    chrome_options.add_argument('--ignore-certificate-errors-spki-ca-list')
+    
+    # 性能優化設置（針對 ARM64 架構）
+    chrome_options.add_argument('--disable-extensions')
+    chrome_options.add_argument('--disable-plugins')
+    chrome_options.add_argument('--disable-images')  # 可選：如果不需要圖片可以加速
+    chrome_options.add_argument('--disable-javascript')  # 可選：如果不需要 JS 可以加速
+    chrome_options.add_argument('--disable-logging')
+    chrome_options.add_argument('--silent')
+    chrome_options.add_argument('--log-level=3')
+    
+    # EC2 環境專用設置
+    chrome_options.add_argument('--remote-debugging-port=9222')
+    chrome_options.add_argument('--disable-background-timer-throttling')
+    chrome_options.add_argument('--disable-renderer-backgrounding')
+    chrome_options.add_argument('--disable-backgrounding-occluded-windows')
+    
+    # 記憶體優化（你的系統有 3.7GB 記憶體）
+    chrome_options.add_argument('--memory-pressure-off')
+    chrome_options.add_argument('--max_old_space_size=2048')
+    chrome_options.add_argument('--disable-background-networking')
+    
+    # 根據診斷結果，設置正確的路徑
     chrome_options.binary_location = '/usr/bin/chromium-browser'
-    service = Service(executable_path='/snap/chromium/3160/usr/lib/chromium-browser/chromedriver')
-
+    
+    # 使用已確認存在的 ChromeDriver
+    chromedriver_path = '/usr/bin/chromedriver'
+    
     try:
+        print(f"[資訊] 使用 Chromium: {chrome_options.binary_location}")
+        print(f"[資訊] 使用 ChromeDriver: {chromedriver_path}")
+        
+        # 創建 Service 對象
+        service = Service(executable_path=chromedriver_path)
+        
+        # 啟動 WebDriver
         driver = webdriver.Chrome(service=service, options=chrome_options)
+        
+        # 測試 driver 是否正常工作
+        print("[測試] 測試 WebDriver 是否正常...")
+        driver.get("data:text/html,<html><body><h1>Test OK</h1></body></html>")
+        
+        print("[成功] WebDriver 啟動並測試成功！")
         return driver
+        
     except WebDriverException as e:
-        print(f"[錯誤] 無法啟動 Chrome Driver: {e}")
-        return None
+        print(f"[錯誤] WebDriver 啟動失敗: {e}")
+        
+        # 嘗試備用方案：使用 snap 版本的 chromedriver
+        try:
+            print("[重試] 嘗試使用 snap 版本的 ChromeDriver...")
+            snap_chromedriver = '/snap/chromium/current/usr/lib/chromium-browser/chromedriver'
+            service = Service(executable_path=snap_chromedriver)
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver.get("data:text/html,<html><body><h1>Test OK</h1></body></html>")
+            print("[成功] 使用 snap ChromeDriver 啟動成功！")
+            return driver
+        except Exception as e2:
+            print(f"[錯誤] snap ChromeDriver 也失敗: {e2}")
+    
+    except Exception as e:
+        print(f"[錯誤] 未預期的錯誤: {e}")
+    
+    return None
+
+def safe_driver_quit(driver):
+    """
+    安全地關閉 WebDriver
+    """
+    if driver is not None:
+        try:
+            driver.quit()
+            print("[資訊] WebDriver 已成功關閉")
+        except Exception as e:
+            print(f"[警告] 關閉 WebDriver 時發生錯誤: {e}")
+    else:
+        print("[警告] driver 為 None，無需關閉")
 
 # 獲取最終網址（處理 Google News 跳轉）
 def get_final_url(driver, url):
@@ -337,6 +412,9 @@ def extract_image_url(driver, sources_urls):
 # 爬蟲主函數
 @require_GET
 def crawler_first_stage(request):
+    driver = None
+    response = None
+    
     try:
         start_time = time.time()
         day = "7"
@@ -376,96 +454,83 @@ def crawler_first_stage(request):
             'https://news.google.com/search?q=%E5%9C%8B%E9%9A%9B%E9%87%8E%E7%81%AB%20when%3A'+day+'d%20bbc&hl=zh-TW&gl=TW&ceid=TW%3Azh-Hant'#國際野火      
         ]
         
-        # 初始化 Chrome 驅動
+        # 啟動 WebDriver
         driver = setup_chrome_driver()
-
-        # 主程式邏輯
-        all_news_items = []
-        start_crawl_time = time.time()
-
-        # 對第一個 URL 使用 fetch_news_with_refresh
-        if urls:
-            first_url = urls[0]
-            news_items = fetch_news_with_refresh(first_url, driver)
-            all_news_items.extend(news_items)
-
-        # 對其餘 URL 使用原始的 fetch_news
-        for url in urls[1:]:
-            news_items = fetch_news(url)
-            all_news_items.extend(news_items)
-
-        if all_news_items:
-            news_df = pd.DataFrame(all_news_items)
-            news_df = news_df.drop_duplicates(subset='標題', keep='first')
-
-            end_crawl_time = time.time()
-            crawl_time = int(end_crawl_time - start_crawl_time)
-            hours, remainder = divmod(crawl_time, 3600)
-            minutes, seconds = divmod(remainder, 60)
-            
-            time_str = ''
-            if hours > 0:
-                time_str += f'{hours}小時'
-            if minutes > 0 or hours > 0:
-                time_str += f'{minutes}分'
-            time_str += f'{seconds}秒'
-            
-            print(f'Google News 爬取完成，耗時：{time_str}')
-
-            # 刪除舊的 CSV 檔案（如果存在）
-            first_stage_file = 'w2.csv'
-            if os.path.exists(first_stage_file):
-                os.remove(first_stage_file)
-
-            for index, item in news_df.iterrows():
-                source_name = item['來源']
-                original_url = item['連結']
-                sources_urls = {source_name: original_url}
-
-                content_results, _, final_urls = fetch_article_content(driver, sources_urls)
-                image_results = extract_image_url(driver, sources_urls)
-
-                content = content_results.get(source_name, '')
-                final_url = final_urls.get(source_name, original_url)
-                image_url = image_results.get(source_name, '')
-
-                result = {
-                    '標題': item['標題'],
-                    '連結': final_url,
-                    '內文': content or '',
-                    '來源': source_name,
-                    '時間': item['時間'],
-                    '圖片': image_url or ''
-                }
-
-                output_df = pd.DataFrame([result])
-                output_df.to_csv(first_stage_file, mode='a', header=not os.path.exists(first_stage_file), 
-                                index=False, encoding='utf-8')
-
-                print(f"已儲存新聞: {result['標題']}")
-
-            driver.quit()
-
+        if driver is None:
             return JsonResponse({
-                'status': 'success',
-                'message': f'第一階段爬蟲完成！耗時：{time_str}',
-                'csv_file': first_stage_file,
-                'total_news': len(news_df)
-            })
+                'status': 'error',
+                'message': 'WebDriver 初始化失敗，請檢查 Chrome/Chromium 安裝與 chromedriver 相容性。'
+            }, status=500)
 
-        driver.quit()
-        return JsonResponse({
-            'status': 'error',
-            'message': '沒有找到新聞'
+        all_news_items = []
+
+        # 第一筆用 Selenium 抓
+        all_news_items.extend(fetch_news_with_refresh(urls[0], driver))
+
+        # 其他用 requests
+        for url in urls[1:]:
+            all_news_items.extend(fetch_news(url))
+
+        if not all_news_items:
+            response = JsonResponse({
+                'status': 'error',
+                'message': '未找到任何新聞資料。'
+            })
+            return response
+
+        news_df = pd.DataFrame(all_news_items).drop_duplicates(subset='標題', keep='first')
+
+        csv_file = 'w2.csv'
+        if os.path.exists(csv_file):
+            os.remove(csv_file)
+
+        for _, item in news_df.iterrows():
+            source = item['來源']
+            original_url = item['連結']
+            sources = {source: original_url}
+
+            content_dict, _, final_urls = fetch_article_content(driver, sources)
+            image_dict = extract_image_url(driver, sources)
+
+            record = {
+                '標題': item['標題'],
+                '連結': final_urls.get(source, original_url),
+                '內文': content_dict.get(source, ''),
+                '來源': source,
+                '時間': item['時間'],
+                '圖片': image_dict.get(source, '')
+            }
+
+            pd.DataFrame([record]).to_csv(
+                csv_file, mode='a',
+                header=not os.path.exists(csv_file),
+                index=False, encoding='utf-8'
+            )
+
+            print(f"✅ 已儲存新聞: {record['標題']}")
+
+        elapsed = time.time() - start_time
+        minutes, seconds = divmod(int(elapsed), 60)
+        hours, minutes = divmod(minutes, 60)
+        time_str = f"{hours}小時{minutes}分{seconds}秒" if hours else f"{minutes}分{seconds}秒"
+
+        response = JsonResponse({
+            'status': 'success',
+            'message': f'第一階段爬蟲完成，耗時：{time_str}',
+            'csv_file': csv_file,
+            'total_news': len(news_df)
         })
 
     except Exception as e:
-        if 'driver' in locals():
-            driver.quit()
-        return JsonResponse({
+        response = JsonResponse({
             'status': 'error',
-            'message': f'爬蟲執行失敗：{str(e)}'
+            'message': f'爬蟲發生錯誤：{str(e)}'
         }, status=500)
+
+    finally:
+        safe_driver_quit(driver)
+
+    return response
 
 #ai 處理
 #導入api key
