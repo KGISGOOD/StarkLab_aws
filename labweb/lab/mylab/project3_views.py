@@ -119,13 +119,21 @@ def fetch_news_with_refresh(url, driver):
         print(f"已打開網頁: {url}")
 
         # 隨機延遲 2 到 3 秒
-        delay_seconds = random.uniform(2, 3)
+        delay_seconds = random.uniform(5,10)
         print(f"⏳ 等待 {delay_seconds:.2f} 秒後刷新網頁...")
         time.sleep(delay_seconds)
 
         # 刷新網頁
         driver.refresh()
         print(f"已刷新網頁: {url}")
+
+        delay_seconds = random.uniform(1.5, 2.5)
+        print(f"第二次刷新前等待 {delay_seconds:.2f} 秒")
+        time.sleep(delay_seconds)
+
+        # 第二次刷新
+        driver.refresh()
+        print("已刷新網頁（第二次）")
 
         # 等待新聞元素加載
         WebDriverWait(driver, 10).until(
